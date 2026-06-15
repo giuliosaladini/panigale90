@@ -1,6 +1,16 @@
 (function () {
   "use strict";
 
+  // Load availability from the CMS-managed JSON file, then start the app.
+  // Falls back to an inline global (js/availability.js) or empty config.
+  fetch("availability.json", { cache: "no-store" })
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .catch(function () { return null; })
+    .then(function (data) {
+      boot(data || window.PANIGALE_AVAILABILITY || { booked: [], contactEmail: "" });
+    });
+
+  function boot(cfg) {
   /* ---------- DATA ---------- */
   var PHOTOS = [
     { src: "assets/img/photo-03.jpg", cap: "Soggiorno con angolo cottura", cls: "g-big" },
@@ -26,8 +36,6 @@
     { ic: "🏠", t: "Piano terra" },
     { ic: "🧥", t: "Stenditoio per soggiorni lunghi" }
   ];
-
-  var cfg = window.PANIGALE_AVAILABILITY || { booked: [], contactEmail: "" };
 
   /* ---------- HELPERS ---------- */
   var $ = function (s, c) { return (c || document).querySelector(s); };
@@ -208,4 +216,5 @@
 
   /* ---------- MISC ---------- */
   $("#year").textContent = new Date().getFullYear();
+  } // end boot
 })();

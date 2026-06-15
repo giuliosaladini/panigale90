@@ -1,0 +1,42 @@
+# Configurazione del pannello di gestione (Decap CMS)
+# ---------------------------------------------------
+# AUTENTICAZIONE: il login usa l'account GitHub di chi gestisce il sito.
+# Serve un piccolo "broker" OAuth. Due opzioni (vedi SETUP-ADMIN.md):
+#   • Hosting su Netlify  -> non serve toccare nulla qui (Netlify fa da broker).
+#   • Hosting su GitHub Pages + Cloudflare Worker -> togli il commento a "base_url"
+#     qui sotto e metti l'URL del tuo Worker.
+backend:
+  name: github
+  repo: francoleoni-web/panigale90
+  branch: main
+  # base_url: https://panigale90-auth.NOME-UTENTE.workers.dev   # solo per l'opzione Cloudflare Worker
+  commit_messages:
+    update: 'Aggiorno disponibilità dal pannello'
+
+locale: it
+load_config_file: true
+
+# Cartelle media (non usate per le date, ma utili se in futuro vuoi caricare foto dal pannello)
+media_folder: assets/img
+public_folder: assets/img
+
+collections:
+  - name: gestione
+    label: Gestione
+    files:
+      - name: disponibilita
+        label: 'Disponibilità — date occupate'
+        file: availability.json
+        format: json
+        description: 'Aggiungi o rimuovi i periodi in cui l''appartamento è già occupato. Le date appariranno bloccate sul sito.'
+        fields:
+          - { name: minNights, label: 'Soggiorno minimo (notti)', widget: number, default: 2, min: 1 }
+          - { name: contactEmail, label: 'Email per le richieste', widget: string }
+          - name: booked
+            label: 'Periodi occupati'
+            label_singular: 'Periodo occupato'
+            widget: list
+            summary: 'Dal {{fields.from}} al {{fields.to}}'
+            fields:
+              - { name: from, label: 'Dal (check-in occupato)', widget: datetime, format: 'YYYY-MM-DD', date_format: 'YYYY-MM-DD', time_format: false, picker_utc: true }
+              - { name: to, label: 'Al (ultima notte occupata)', widget: datetime, format: 'YYYY-MM-DD', date_format: 'YYYY-MM-DD', time_format: false, picker_utc: true }
