@@ -133,6 +133,27 @@ h1,h2,h3{font-family:"Fraunces",Georgia,serif;font-weight:600;line-height:1.15;m
 .sw--sel{background:var(--ochre)}
 .cal-selection{font-weight:600;font-size:.92rem}
 
+/* Booking badge (hero) */
+.bk-badge{display:inline-flex;align-items:center;gap:.45rem;font-weight:600}
+.bk-badge b{background:#003b95;color:#fff;border-radius:6px 6px 6px 0;padding:.15rem .45rem;font-size:.9rem;line-height:1.2}
+
+/* Reviews */
+.reviews{display:grid;grid-template-columns:300px 1fr;gap:48px;align-items:center;
+  background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:36px}
+.reviews__score{text-align:center}
+.bk-score{display:inline-block;background:#003b95;color:#fff;font-family:"Fraunces",serif;
+  font-size:2.6rem;font-weight:600;padding:.4rem 1.1rem;border-radius:12px 12px 12px 0;line-height:1}
+.reviews__label{color:var(--muted);margin:1rem 0 1.4rem}
+.reviews__label strong{color:var(--ink);font-size:1.1rem}
+.btn--book{background:#003b95}
+.btn--book:hover{background:#002d72}
+.reviews__bars{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:14px 32px}
+.reviews__bars li{display:grid;grid-template-columns:1fr 56px;align-items:center;gap:.4rem .8rem;font-size:.9rem}
+.reviews__bars li span{grid-column:1;color:var(--muted)}
+.reviews__bars li i{grid-column:1;height:8px;background:var(--cream-2);border-radius:99px;overflow:hidden;display:block}
+.reviews__bars li i b{display:block;height:100%;background:var(--ochre);border-radius:99px}
+.reviews__bars li em{grid-column:2;grid-row:1/3;font-style:normal;font-weight:600;text-align:right;font-size:1rem}
+
 /* Location */
 .location{display:grid;grid-template-columns:1.4fr 1fr;gap:40px;align-items:start}
 .location__map{border-radius:var(--radius);overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow)}
@@ -182,7 +203,8 @@ h1,h2,h3{font-family:"Fraunces",Georgia,serif;font-weight:600;line-height:1.15;m
 /* Responsive */
 @media(max-width:900px){
   .nav__links{display:none}
-  .about,.location,.book{grid-template-columns:1fr}
+  .about,.location,.book,.reviews{grid-template-columns:1fr}
+  .reviews__bars{grid-template-columns:1fr}
   .about__card{position:static}
   .amenities{grid-template-columns:repeat(2,1fr)}
   .cal-grids{grid-template-columns:1fr}
