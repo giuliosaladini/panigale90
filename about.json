@@ -1,0 +1,14 @@
+{
+  "title": "L'alloggio",
+  "intro": "L'appartamento è situato nel contesto di un **borgo**, in una parte di campagna dentro la città: al **piano terra con ingresso indipendente**, completamente arredato, tranquillo e luminoso. È ideale per riposarsi ed è dotato di **ampio parcheggio auto** all'interno del giardino condominiale.\n\nNel soggiorno la parete cottura è arredata e completa di tutto il necessario per cucinare e mangiare. È presente anche la **lavatrice**, con la possibilità di stendere nel giardino condominiale per gli ospiti che soggiornano più giorni.",
+  "sections": [
+    {
+      "heading": "Accesso degli ospiti",
+      "body": "Si accede alla struttura tramite una **sbarra telecomandata** che dà ingresso al borgo e al suo grande giardino, dove è possibile parcheggiare l'auto. Il giardino è di uso comune e comprende un'area di ristoro, oltre allo stenditoio per gli ospiti che desiderano fermarsi più giorni."
+    },
+    {
+      "heading": "La zona",
+      "body": "La struttura si trova a **Borgo Panigale** (zona ovest di Bologna), tra la fabbrica della **Ducati** e l'Aeroporto Guglielmo Marconi. Da qui si raggiungono facilmente l'**Unipol Arena** di Casalecchio di Reno e lo **Stadio Renato Dall'Ara**, dove si tengono concerti, eventi e manifestazioni sportive. Un'altra attrattiva è il **Museo Ducati**, in Via Cavalieri Ducati 3."
+    }
+  ]
+}

@@ -3,15 +3,13 @@
 
   // Load availability from the CMS-managed JSON file, then start the app.
   // Falls back to an inline global (js/availability.js) or empty config.
-  // Load CMS-managed data (availability + gallery), then start the app.
-  Promise.all([
-    fetch("availability.json", { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }),
-    fetch("gallery.json", { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; })
-  ]).then(function (res) {
-    boot(res[0] || window.PANIGALE_AVAILABILITY || { booked: [], contactEmail: "" }, (res[1] && res[1].photos) || []);
+  // Load CMS-managed data (availability + gallery + about), then start the app.
+  var grab = function (u) { return fetch(u, { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }); };
+  Promise.all([grab("availability.json"), grab("gallery.json"), grab("about.json")]).then(function (res) {
+    boot(res[0] || window.PANIGALE_AVAILABILITY || { booked: [], contactEmail: "" }, (res[1] && res[1].photos) || [], res[2]);
   });
 
-  function boot(cfg, galleryPhotos) {
+  function boot(cfg, galleryPhotos, about) {
   /* ---------- DATA ---------- */
   // Foto gestite dal pannello /admin (gallery.json). La prima = hero + riquadro grande.
   var PHOTOS = (galleryPhotos || []).map(function (p, i) {
@@ -80,6 +78,29 @@
     if (e.key === "ArrowLeft") step(-1);
     if (e.key === "ArrowRight") step(1);
   });
+
+  /* ---------- ABOUT (testi gestiti dal pannello) ---------- */
+  function esc(t) { return (t || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+  function mdLite(s) {
+    return (s || "").split(/\n{2,}/).map(function (par) {
+      var h = esc(par.trim());
+      h = h.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+      h = h.replace(/\*([^*]+)\*/g, "<em>$1</em>");
+      h = h.replace(/_([^_]+)_/g, "<em>$1</em>");
+      h = h.replace(/\n/g, "<br>");
+      return h ? "<p>" + h + "</p>" : "";
+    }).join("");
+  }
+  var aboutBox = $(".about__text");
+  if (aboutBox && about) {
+    var html = '<h2 class="section__title">' + esc(about.title || "L'alloggio") + "</h2>";
+    html += mdLite(about.intro);
+    (about.sections || []).forEach(function (s) {
+      if (s.heading) html += "<h3>" + esc(s.heading) + "</h3>";
+      html += mdLite(s.body);
+    });
+    aboutBox.innerHTML = html;
+  }
 
   /* ---------- AMENITIES ---------- */
   var aGrid = $("#amenitiesGrid");

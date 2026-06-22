@@ -40,6 +40,22 @@ collections:
             fields:
               - { name: from, label: 'Dal (check-in occupato)', widget: datetime, format: 'YYYY-MM-DD', date_format: 'YYYY-MM-DD', time_format: false, picker_utc: true }
               - { name: to, label: 'Al (ultima notte occupata)', widget: datetime, format: 'YYYY-MM-DD', date_format: 'YYYY-MM-DD', time_format: false, picker_utc: true }
+      - name: testi
+        label: 'Testi — L''alloggio'
+        file: about.json
+        format: json
+        description: 'Titolo principale, testo introduttivo e paragrafi secondari. Puoi aggiungere quanti paragrafi vuoi con "Add".'
+        fields:
+          - { name: title, label: 'Titolo principale', widget: string }
+          - { name: intro, label: 'Testo introduttivo', widget: markdown, buttons: ['bold', 'italic'], editor_components: [], minimal: true }
+          - name: sections
+            label: 'Paragrafi secondari'
+            label_singular: 'Paragrafo'
+            widget: list
+            summary: '{{fields.heading}}'
+            fields:
+              - { name: heading, label: 'Titolo del paragrafo', widget: string }
+              - { name: body, label: 'Testo', widget: markdown, buttons: ['bold', 'italic'], editor_components: [], minimal: true }
       - name: foto
         label: 'Foto'
         file: gallery.json
