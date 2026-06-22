@@ -3,27 +3,20 @@
 
   // Load availability from the CMS-managed JSON file, then start the app.
   // Falls back to an inline global (js/availability.js) or empty config.
-  fetch("availability.json", { cache: "no-store" })
-    .then(function (r) { return r.ok ? r.json() : null; })
-    .catch(function () { return null; })
-    .then(function (data) {
-      boot(data || window.PANIGALE_AVAILABILITY || { booked: [], contactEmail: "" });
-    });
+  // Load CMS-managed data (availability + gallery), then start the app.
+  Promise.all([
+    fetch("availability.json", { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }),
+    fetch("gallery.json", { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; })
+  ]).then(function (res) {
+    boot(res[0] || window.PANIGALE_AVAILABILITY || { booked: [], contactEmail: "" }, (res[1] && res[1].photos) || []);
+  });
 
-  function boot(cfg) {
+  function boot(cfg, galleryPhotos) {
   /* ---------- DATA ---------- */
-  var PHOTOS = [
-    { src: "assets/img/photo-03.jpg", cap: "Soggiorno con angolo cottura", cls: "g-big" },
-    { src: "assets/img/photo-01.jpg", cap: "Esterno — il borgo e l'ingresso indipendente" },
-    { src: "assets/img/photo-07.jpg", cap: "Giardino condominiale con parcheggio" },
-    { src: "assets/img/photo-04.jpg", cap: "Interni dell'appartamento" },
-    { src: "assets/img/photo-05.jpg", cap: "Zona giorno", cls: "g-wide" },
-    { src: "assets/img/photo-06.jpg", cap: "Dettagli dell'alloggio" },
-    { src: "assets/img/photo-08.jpg", cap: "Camera / zona notte" },
-    { src: "assets/img/photo-09.jpg", cap: "Ambienti luminosi" },
-    { src: "assets/img/photo-10.jpg", cap: "Spazi dell'appartamento" },
-    { src: "assets/img/photo-02.jpg", cap: "Il borgo" }
-  ];
+  // Foto gestite dal pannello /admin (gallery.json). La prima = hero + riquadro grande.
+  var PHOTOS = (galleryPhotos || []).map(function (p, i) {
+    return { src: p.image, cap: p.caption || "", cls: i === 0 ? "g-big" : "" };
+  });
 
   var AMENITIES = [
     { ic: "🅿️", t: "Parcheggio gratuito nel giardino" },
@@ -54,7 +47,10 @@
   var isBusy = function (d) { return !!busy[ymd(d)]; };
   var isPast = function (d) { return d < today; };
 
-  /* ---------- GALLERY ---------- */
+  /* ---------- HERO + GALLERY ---------- */
+  var heroImg = $("#heroImg");
+  if (heroImg && PHOTOS[0]) { heroImg.src = PHOTOS[0].src; if (PHOTOS[0].cap) heroImg.alt = PHOTOS[0].cap; }
+
   var grid = $("#galleryGrid");
   PHOTOS.forEach(function (p, i) {
     var fig = document.createElement("figure");

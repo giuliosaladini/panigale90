@@ -16,9 +16,9 @@ backend:
 locale: it
 load_config_file: true
 
-# Cartelle media (non usate per le date, ma utili se in futuro vuoi caricare foto dal pannello)
+# Cartelle dove vengono caricate le foto dal pannello
 media_folder: assets/img
-public_folder: assets/img
+public_folder: /assets/img
 
 collections:
   - name: gestione
@@ -40,3 +40,17 @@ collections:
             fields:
               - { name: from, label: 'Dal (check-in occupato)', widget: datetime, format: 'YYYY-MM-DD', date_format: 'YYYY-MM-DD', time_format: false, picker_utc: true }
               - { name: to, label: 'Al (ultima notte occupata)', widget: datetime, format: 'YYYY-MM-DD', date_format: 'YYYY-MM-DD', time_format: false, picker_utc: true }
+      - name: foto
+        label: 'Foto'
+        file: gallery.json
+        format: json
+        description: 'Carica, elimina e riordina le foto. ⚠️ La PRIMA foto dell''elenco è quella grande in cima al sito (hero): trascina una foto in cima per metterla in evidenza.'
+        fields:
+          - name: photos
+            label: 'Foto (la prima è in evidenza)'
+            label_singular: 'Foto'
+            widget: list
+            summary: '{{fields.caption}}'
+            fields:
+              - { name: image, label: 'Immagine', widget: image }
+              - { name: caption, label: 'Didascalia', widget: string, required: false }
