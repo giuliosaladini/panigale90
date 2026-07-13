@@ -1,14 +1,5 @@
 {
   "minNights": 1,
   "contactEmail": "giulio.saladini@alice.it",
-  "booked": [
-    {
-      "from": "2026-07-15",
-      "to": "2026-07-17"
-    },
-    {
-      "from": "2026-08-01",
-      "to": "2026-08-02"
-    }
-  ]
+  "booked": []
 }
